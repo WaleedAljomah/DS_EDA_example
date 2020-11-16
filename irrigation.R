@@ -61,13 +61,34 @@ S..America_df <- irrigation_t %>%
 
 
 #plot area over time for each region
-ggplot(irrigation_t, aes(x = year, y= region)) +
+
+#Africa
+ggplot(irrigation_t, aes(x = year, y= value)) +
   geom_line(data = Africa_df, aes(year, value), color = "darkblue") +
-  geom_line(data = Europe_df, aes(year, value), color = "pink") +
-  geom_line(data = N..America_df, aes(year, value), color = "red") +
-  geom_line(data = S..America_df, aes(year, value), color = "orange")
+  labs(title = "Africa",
+       x = "Year",
+       y = "irrigation")
 
-#where is the lowest and heighst?
+#Europe
+ggplot(irrigation_t, aes(x = year, y= value)) +
+  geom_line(data = Europe_df, aes(year, value), color = "Green") +
+  labs(title = "Europe",
+       x = "Year",
+       y = "irrigation")
 
-#what is the rate-of-change in each region? (maybe tricky)
+#N.America
+ggplot(irrigation_t, aes(x = year, y= value)) +
+  geom_line(data = N..America_df, aes(year, value), color = "Pink") +
+  labs(title = "N.America",
+       x = "Year",
+       y = "irrigation")
+#S.America
+ggplot(irrigation_t, aes(x = year, y= value)) +
+  geom_line(data = S..America_df, aes(year, value), color = "Red") +
+  labs(title = "S.America",
+       x = "Year",
+       y = "irrigation")
+ 
+
+
 
