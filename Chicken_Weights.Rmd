@@ -1,0 +1,80 @@
+---
+title:  "_Chicken Weight Analysis_" 
+author: "Waleed Aljomah"
+date: "04/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(tidyverse)
+library(stats)
+library(dplyr)
+library(ggplot2)
+library(pander)
+```
+
+
+
+
+
+
+```{r chicken weights, echo=FALSE}
+pander(chickwts)
+chickwts %>%
+  group_by(feed) %>%
+  summarise(n = length(feed),
+            avarage = mean(weight),
+            SD = sd(weight))
+summary(chickwts)
+```
+
+
+
+```{r chickwts1, echo=FALSE}
+chickwts.av <- aov(weight ~ feed, data = chickwts)
+tukeyTest <- TukeyHSD(chickwts.av)
+```
+
+
+
+
+## Including Plots
+
+**below picture illustrate the relation between the weight of the chicken to the type of feeding**
+
+```{r chickwts1, echo=FALSE}
+ggplot(chickwts, aes(feed, weight)) +
+  geom_boxplot()
+```
+
+
+
+
+**Illustration of the relationship**
+
+
+```{r chickwts2, echo=FALSE}
+ggplot(chickwts, aes(feed, weight)) +
+  geom_jitter(width = 1)+
+  stat_summary(fun.data = mean_sdl,
+               fun.args = list(mult = 1),
+               col = "red")
+```
+
+
+
+
+## Infrential statistics:
+_the one-way ANNOVA summary_ : 
+
+```{r chickwts.lm, echo=FALSE}
+chickwts_lm <- lm(weight ~ feed, data = chickwts)
+chickwts_lm
+```
+
+```{r chickwts.annova, echo=FALSE}
+chickwts.anova <- aov(chickwts_lm)
+chickwts.anova
+```

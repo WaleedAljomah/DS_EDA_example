@@ -8,45 +8,50 @@ library(tidyverse)
 library(rio)
 library(tidyr)
 
-#Read in data (cvs format):
-#newer methods from package
+#data
 jems <- read.csv("data/diamonds.csv")
 
-#super convenient way 
-#library(rio)
-#jems2 <- import("data/diamonds.csv")
-
-#get fimiliar with our data:
-summary(jems)
-names(jems)
-str(jems)
 
 
-# more detail:
-attributes(jems)
-typeof(jems)
+#Explore data
+
+
+names(jems)   #names of the attributes 
+str(jems)     #structure of data and give you idea about type of each attributes
+dim(jems)     #diminsion of the data frame
+summary(jems) #give a deeper exploratory look, e.g. mean of an attributes
+typeof(jems)  #give the type of object
+
 
 
 #basic filtering
+
+
+#give me the list where the clarity = VVS2 and cut = good
 jems %>%
-  filter(clarity == "VVS2" & cut == "Good")
+  filter(clarity == "VVS2" & cut == "Good")  
+
 
 #How many diamonds with a clarity of category “IF” are present in the data-set?
 
-clarity <- (jems) %>%
+clarity_new <- (jems) %>%
   filter(clarity == "IF")
 
 
-library(rio)
+#can be exported as a new data set
 
 export(clarity, "data/clarity_new.csv")
 
-#what are the prices of IF clarity daimond
-jems$clarity == "IF"      
+
+
+#what are the prices of IF clarity diamond
+jems$clarity == "IF"
+
+
 # What fraction of the total do they represent?
 nrow(clarity)/nrow(jems)
 
- # Exercise 8.4 (Summarizing proportions)
+
 
 
 #- What proportion of the whole is made up of each category of clarity?
@@ -64,43 +69,39 @@ jems %>%
 
 
 
-#Exercise 8.5 (Find specific diamonds prices)
+# specific diamonds price
 
 jems %>%
   group_by(cut, color) %>%
   group_split()
 
-#- What is the cheapest diamond price overall?
+# the cheapest diamond price overall
 min(jems$price)
 
-#or 
-jems %>%
-  filter(price == min(price))
-#- What is the range of diamond prices?
+
+# the range of diamond prices
 range(jems$price)
 
-#- What is the average diamond price in each category of cut and color?
+# the average diamond price in each category of cut and color
 jems %>%
   group_by(cut, color) %>%
   summarise(avg = mean(price))
-  #Exercise 8.6 (Basic plotting)
-#Make a scatter plot that shows the price of a diamond as described by another continous variable, like the carat.
 
 
-# Exercise 8.6 (basic plotting) ----
 
-ggplot(jems, aes(x = carat, y = price)) +
-  geom_point()
+ 
+#Make a scatter plot that shows the price of a diamond as described by 
+#another continuous variable, like the carat.
 
-#transformation
-#Recall the function for applying transformation  from tidyverse
+
+
+#transformation 
+
 jems <- jems %>%
   mutate(carat_log10 = log10(carat),
-         price_log10(price))
+         price_log10 = log10(price))
 
-
-# Exercise 8.10 (Viewing models)
-#using lm function
 
 # plot
-ggplot(jems, aes(carat_log10, price_log10))
+ggplot(jems, aes(carat_log10, price_log10))+
+  geom_point()
